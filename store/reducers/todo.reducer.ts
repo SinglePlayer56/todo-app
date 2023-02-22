@@ -1,6 +1,8 @@
 import {AnyAction, createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import * as process from "process";
+import {HYDRATE} from "next-redux-wrapper";
+import {RootState} from "../index";
 
 export interface ITodo {
     id: string,
@@ -80,6 +82,10 @@ export const deleteTodo = createAsyncThunk<string, string, {rejectValue: string}
     }
 )
 
+const isHydrateAction = (action: AnyAction): action is PayloadAction<RootState> => {
+    return action.type === HYDRATE;
+}
+
 const initialState: ITodoReducer = {
     todos: [],
     error: null,
@@ -126,6 +132,9 @@ const TodoSlice = createSlice({
             .addCase(deleteTodo.fulfilled, (state, action) => {
                 state.todos = state.todos.filter((todo) => todo.id !== action.payload);
                 state.loading = false;
+            })
+            .addMatcher(isHydrateAction, (state, action) => {
+                state.todos = action.payload.todos.todos;
             })
             .addMatcher(isError, (state, action:PayloadAction<string>) => {
                 state.error = action.payload;
