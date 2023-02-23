@@ -12,7 +12,9 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
 
     const variants = {
         create: {opacity: 1},
-        delete: {opacity: 0}
+        delete: {opacity: 0, height:0, padding:0, marginBottom:0, width:0},
+        line: {width: '100%'},
+        noLine: {width: 0}
     }
 
     const onDeleteTodo = (id: string) => {
@@ -28,11 +30,23 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
         <motion.div
             animate={deleteTodos ? "delete" : "create"}
             variants={variants}
-            initial={{opacity: 0, height:52}}
+            initial={{opacity: 0}}
             transition={{duration: 0.5}}
+            style={{overflow: 'hidden'}}
             className={styles.todo}>
             <Checkbox setToggle={onToggleTodo} completed={completed} id={id}/>
-            <p className={styles.text}>{text}</p>
+            <div>
+                <p className={styles.text}>
+                    <motion.span
+                        className={styles.line}
+                        initial={{width: 0}}
+                        animate={completed ? "line" : "noLine"}
+                        variants={variants}
+                    >
+                    </motion.span>
+                    <span>{text}</span>
+                </p>
+            </div>
             <DeleteIcon onClick={() => onDeleteTodo(id)} className={styles.delete}/>
         </motion.div>
     );
