@@ -12,7 +12,7 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
 
     const variants = {
         create: {opacity: 1},
-        delete: {opacity: 0, x: "100%"}
+        delete: {opacity: 0}
     }
 
     const onDeleteTodo = (id: string) => {
