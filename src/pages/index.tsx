@@ -4,6 +4,7 @@ import styles from '../styles/home.module.css';
 import {Todo, TodoForm} from "../../components";
 import {GetServerSideProps} from "next";
 import {wrapper} from "../../store";
+import {motion} from 'framer-motion';
 
 export default function Home(): JSX.Element {
     const todos = useAppSelector((state) => state.todos.todos);
@@ -13,14 +14,16 @@ export default function Home(): JSX.Element {
             <h1 className={styles.h1}>Todos application</h1>
             <div className={styles.todos} >
                 <TodoForm/>
-                {todos.map(todo => (
-                    <Todo
-                        key={todo.id}
-                        id={todo.id}
-                        text={todo.text}
-                        completed={todo.completed}
-                    />
-                ))}
+                <motion.div className={styles.todosWrapper}>
+                    {todos.map(todo => (
+                        <Todo
+                            key={todo.id}
+                            id={todo.id}
+                            text={todo.text}
+                            completed={todo.completed}
+                        />
+                    ))}
+                </motion.div>
             </div>
         </>
 
