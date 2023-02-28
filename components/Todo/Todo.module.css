@@ -10,10 +10,11 @@
     margin-bottom: 20px;
 }
 
-.text {
+.textWrapper {
     position: relative;
     padding: 0 5px;
     display: inline;
+    margin-right: auto;
 }
 
 .line{
@@ -26,6 +27,10 @@
     border-radius: 3px;
     padding: 0;
     margin:0;
+}
+
+.text {
+    white-space: nowrap;
 }
 
 .delete {

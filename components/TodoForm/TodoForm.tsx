@@ -71,6 +71,7 @@ export const TodoForm = () => {
                     <input className={styles.input}
                            type="text"
                            placeholder={'Input todos'}
+                           autoComplete={'off'}
                            {...rest}
                            ref={inputRefCallback}
                     />

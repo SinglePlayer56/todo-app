@@ -40,8 +40,7 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
             style={{overflow: 'hidden'}}
             className={styles.todo}>
             <Checkbox setToggle={onToggleTodo} isLoading={isLoading} completed={completed} id={id}/>
-            <div>
-                <p className={styles.text}>
+                <p className={styles.textWrapper}>
                     <motion.span
                         className={styles.line}
                         initial={{width: 0}}
@@ -49,9 +48,8 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
                         variants={variants}
                     >
                     </motion.span>
-                    <span>{text}</span>
+                    <span className={styles.text}>{text}</span>
                 </p>
-            </div>
             <button disabled={isLoading} onClick={() => onDeleteTodo(id)} style={{backgroundColor: "inherit"}}>
                 <DeleteIcon  className={styles.delete}/>
             </button>
