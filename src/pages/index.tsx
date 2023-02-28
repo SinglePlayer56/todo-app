@@ -14,6 +14,7 @@ export default function Home(): JSX.Element {
         <>
             <Head>
                 <title>Todo Application</title>
+                <meta name="description" content="My todo application" />
             </Head>
             <div className={styles.wrapper}>
                 <h1 className={styles.h1}>Todos application</h1>
