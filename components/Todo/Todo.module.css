@@ -7,10 +7,6 @@
     border-radius: 5px;
     padding: 15px 20px;
     color: var(--white);
-    /*height: 52px;*/
-}
-
-.todo:not(:last-child) {
     margin-bottom: 20px;
 }
 

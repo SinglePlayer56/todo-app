@@ -10,7 +10,7 @@ export default function Home(): JSX.Element {
     const todos = useAppSelector((state) => state.todos.todos);
 
     return (
-        <>
+        <div className={styles.wrapper}>
             <h1 className={styles.h1}>Todos application</h1>
             <div className={styles.todos} >
                 <TodoForm/>
@@ -25,7 +25,7 @@ export default function Home(): JSX.Element {
                     ))}
                 </motion.div>
             </div>
-        </>
+        </div>
 
     )
 }
