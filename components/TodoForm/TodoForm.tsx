@@ -1,5 +1,5 @@
 import styles from './TodoForm.module.css';
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useEffect, useRef, useState} from "react";
 import cn from "classnames";
 import AddIcon from './add-icon.svg';
 import CloseIcon from './close-icon.svg';
@@ -11,6 +11,14 @@ export const TodoForm = () => {
     const [isEditable, setIsEditable] = useState<boolean>(false);
     const [text, setText] = useState<string>('');
     const dispatch = useAppDispatch();
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (inputRef.current && isEditable) {
+            inputRef.current.focus();
+        }
+    },[isEditable]);
+
     const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value);
     }
@@ -35,6 +43,7 @@ export const TodoForm = () => {
                            placeholder={'Input todos'}
                            value={text}
                            onChange={handleChangeInput}
+                           ref={inputRef}
                     />
                     <DoneIcon className={styles.done} onClick={() => onAddTodo(text)}/>
                     <CloseIcon className={styles.done} onClick={unEditable}/>

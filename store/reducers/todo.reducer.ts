@@ -1,8 +1,7 @@
 import {AnyAction, createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import axios from "axios";
-import * as process from "process";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "../index";
+import TodoApi from "../../api/api.todo";
 
 export interface ITodo {
     id: string,
@@ -20,13 +19,12 @@ export const getTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: stri
     'todo/getTodo',
     async function (_, {rejectWithValue}) {
         try {
-            const {data} = await axios.get(`${process.env.NEXT_PUBLIC_DOMAIN}/todos`);
-
-            return data;
-        } catch (e) {
+            return TodoApi.getTodos();
+        } catch (e:unknown) {
             if (e instanceof Error) {
                 return rejectWithValue(e.message);
             }
+            throw e;
         }
     }
 );
@@ -35,13 +33,12 @@ export const addNewTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
     'todo/addNewTodo',
     async function (text: string, {rejectWithValue}) {
         try {
-            const {data} = await axios.post(`${process.env.NEXT_PUBLIC_DOMAIN}/todo`,{text});
-
-            return data;
-        } catch (e) {
+            return TodoApi.createTodo(text);
+        } catch (e:unknown) {
             if (e instanceof Error) {
                 return rejectWithValue(e.message);
             }
+            throw e;
         }
     }
 )
@@ -53,13 +50,12 @@ export const toggleStatus = createAsyncThunk<ITodo, string, {rejectValue: string
 
         if (todo) {
             try {
-                const {data} = await axios.put(`${process.env.NEXT_PUBLIC_DOMAIN}/todo/${id}`, {completed: !todo.completed})
-
-                return data;
+                return TodoApi.toggleStatus(id, !todo.completed);
             } catch (e) {
                 if (e instanceof Error) {
                     return rejectWithValue(e.message);
                 }
+                throw e;
             }
         } else {
             return rejectWithValue('No such todo in the list!');
@@ -71,13 +67,14 @@ export const deleteTodo = createAsyncThunk<string, string, {rejectValue: string}
     'todos/deleteTodo',
     async function (id, {rejectWithValue}){
         try {
-            const {data} = await axios.delete(`${process.env.NEXT_PUBLIC_DOMAIN}/todo/${id}`);
+            const data = await TodoApi.deleteTodo(id);
 
             return data.id;
         } catch (e) {
             if (e instanceof Error) {
                 return rejectWithValue(e.message);
             }
+            throw e;
         }
     }
 )

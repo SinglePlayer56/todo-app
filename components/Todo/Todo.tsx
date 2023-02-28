@@ -9,6 +9,7 @@ import {useState} from "react";
 export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
     const dispatch = useAppDispatch();
     const [deleteTodos, setDeleteTodos] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const variants = {
         create: {opacity: 1},
@@ -17,13 +18,17 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
         noLine: {width: 0}
     }
 
-    const onDeleteTodo = (id: string) => {
-        setDeleteTodos(true)
-        dispatch(deleteTodo(id));
+    const onDeleteTodo = async (id: string) => {
+        setIsLoading(true);
+        setDeleteTodos(true);
+        await dispatch(deleteTodo(id));
+        setIsLoading(false);
     }
 
-    const onToggleTodo = (id: string) => {
-        dispatch(toggleStatus(id));
+    const onToggleTodo = async (id: string) => {
+        setIsLoading(true);
+        await dispatch(toggleStatus(id));
+        setIsLoading(false);
     }
 
     return (
@@ -34,7 +39,7 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
             transition={{duration: 0.5}}
             style={{overflow: 'hidden'}}
             className={styles.todo}>
-            <Checkbox setToggle={onToggleTodo} completed={completed} id={id}/>
+            <Checkbox setToggle={onToggleTodo} isLoading={isLoading} completed={completed} id={id}/>
             <div>
                 <p className={styles.text}>
                     <motion.span
@@ -47,7 +52,9 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
                     <span>{text}</span>
                 </p>
             </div>
-            <DeleteIcon onClick={() => onDeleteTodo(id)} className={styles.delete}/>
+            <button disabled={isLoading} onClick={() => onDeleteTodo(id)} style={{backgroundColor: "inherit"}}>
+                <DeleteIcon  className={styles.delete}/>
+            </button>
         </motion.div>
     );
 };

@@ -4,4 +4,5 @@ export interface CheckboxProps extends DetailedHTMLProps<InputHTMLAttributes<HTM
     completed: boolean;
     id: string;
     setToggle: (id: string) => void;
+    isLoading: boolean;
 }
