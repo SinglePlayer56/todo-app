@@ -50,7 +50,7 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
                     </motion.span>
                     <span className={styles.text}>{text}</span>
                 </p>
-            <button disabled={isLoading} onClick={() => onDeleteTodo(id)} style={{backgroundColor: "inherit"}}>
+            <button aria-label={"delete"}  disabled={isLoading} onClick={() => onDeleteTodo(id)} style={{backgroundColor: "inherit"}}>
                 <DeleteIcon  className={styles.delete}/>
             </button>
         </motion.div>
