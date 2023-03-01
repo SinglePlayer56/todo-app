@@ -14,21 +14,21 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
 
     const handlersSwiper = useSwipeable({
         onSwiped: eventData => {
-            if (eventData.absX > 150) {
+            if (eventData.deltaX > 150) {
                 setX('100');
             } else {
                 setX(0);
             }
         },
         onSwiping: eventData => {
-            if (eventData.absX < -90) {
+            if (eventData.deltaX < -120) {
                 setX(0);
             } else {
                 setX(eventData.deltaX);
             }
         },
         onSwipedRight: eventData => {
-            if (eventData.absX > 150) {
+            if (eventData.deltaX > 150) {
                 onDeleteTodo(id);
             }
         }

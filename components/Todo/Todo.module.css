@@ -9,7 +9,7 @@
     color: var(--white);
     margin-bottom: 20px;
 
-    transition: transform 0.2s linear;
+    transition: transform 0.2s ease;
 }
 
 .textWrapper {
