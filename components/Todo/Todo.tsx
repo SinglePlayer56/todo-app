@@ -1,12 +1,11 @@
 import {deleteTodo, ITodo, toggleStatus} from "../../store/reducers/todo.reducer";
 import {useAppDispatch} from "../../custom-hooks/redux.hooks";
 import styles from './Todo.module.css';
-import {Checkbox} from "../Checkbox/Checkbox";
-import DeleteIcon from './trash-cart-icon.svg';
 import {motion} from 'framer-motion';
-import {useState} from "react";
+import React, {useState} from "react";
+import {Button, Checkbox} from "components";
 
-export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
+export const Todo = React.memo (({id, text, completed}: ITodo): JSX.Element => {
     const dispatch = useAppDispatch();
     const [deleteTodos, setDeleteTodos] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,19 +39,23 @@ export const Todo = ({id, text, completed}: ITodo): JSX.Element => {
             style={{overflow: 'hidden'}}
             className={styles.todo}>
             <Checkbox setToggle={onToggleTodo} isLoading={isLoading} completed={completed} id={id}/>
-                <p className={styles.textWrapper}>
-                    <motion.span
-                        className={styles.line}
-                        initial={{width: 0}}
-                        animate={completed ? "line" : "noLine"}
-                        variants={variants}
-                    >
-                    </motion.span>
-                    <span className={styles.text}>{text}</span>
-                </p>
-            <button aria-label={"delete"}  disabled={isLoading} onClick={() => onDeleteTodo(id)} style={{backgroundColor: "inherit"}}>
-                <DeleteIcon  className={styles.delete}/>
-            </button>
+            <p className={styles.textWrapper}>
+                <motion.span
+                    className={styles.line}
+                    initial={{width: 0}}
+                    animate={completed ? "line" : "noLine"}
+                    variants={variants}
+                >
+                </motion.span>
+                <span className={styles.text}>{text}</span>
+            </p>
+            <Button
+                action={'delete'}
+                disabled={isLoading}
+                onClick={() => onDeleteTodo(id)}
+            />
         </motion.div>
     );
-};
+});
+
+Todo.displayName = 'Todo';

@@ -1,14 +1,12 @@
 import styles from './TodoForm.module.css';
 import {useEffect, useRef, useState} from "react";
 import cn from "classnames";
-import AddIcon from './add-icon.svg';
-import CloseIcon from './close-icon.svg';
-import DoneIcon from './done-icon.svg';
 import {useAppDispatch} from "../../custom-hooks/redux.hooks";
 import {addNewTodo} from "../../store/reducers/todo.reducer";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {motion} from 'framer-motion';
 import {errorTypeTextTodo} from "../../helpers/validateForm";
+import {Button} from "../Button/Button";
 
 interface ITodoForm {
     textTodo: string;
@@ -16,8 +14,8 @@ interface ITodoForm {
 
 export const TodoForm = () => {
     const [isEditable, setIsEditable] = useState<boolean>(false);
-    const dispatch = useAppDispatch();
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const dispatch = useAppDispatch();
     const {register, handleSubmit, reset, formState: {errors}} = useForm<ITodoForm>();
     const {ref, ...rest} = register('textTodo', {required: true, maxLength: 21});
 
@@ -61,10 +59,7 @@ export const TodoForm = () => {
             initial={{paddingBottom: 15}}
             transition={{duration: 0.7}}
             animate={errors.textTodo ? "invalid" : "valid"}
-            className={cn(styles.form, {
-                [styles.invalid]: errors.textTodo
-            })}
-            action=""
+            className={styles.form}
         >
             {isEditable ?
                 <>
@@ -75,29 +70,25 @@ export const TodoForm = () => {
                            {...rest}
                            ref={inputRefCallback}
                     />
-                    <button className={styles.button} type={"submit"}>
-                        <DoneIcon className={styles.done}/>
-                    </button>
-                    <button className={styles.button} onClick={unEditable}>
-                        <CloseIcon className={styles.done}/>
-                    </button>
+                    <Button action={'done'} type={'submit'}/>
+                    <Button action={'close'} onClick={unEditable} />
                 </>
                 :
                 <div className={styles.titleWrapper} onClick={() => setIsEditable(true)}>
-                    <AddIcon className={styles.icon}/>
+                    <Button action={'add'}/>
                     <p className={cn(styles.input, styles.p)}>Добавить задачу</p>
                 </div>
             }
             {errors.textTodo &&
                 <motion.p
                     className={styles.error}
-                    initial={{opacity:0}}
-                    animate={{opacity:1}}
-                    transition={{ delay: 0.5, duration: 0.5}}
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    transition={{delay: 0.5, duration: 0.5}}
                 >
                     {errorTypeTextTodo(errors.textTodo)}
                 </motion.p>
             }
         </motion.form>
-    )
-}
+    );
+};
