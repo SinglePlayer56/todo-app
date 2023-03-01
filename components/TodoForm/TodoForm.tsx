@@ -71,7 +71,7 @@ export const TodoForm = () => {
                            ref={inputRefCallback}
                     />
                     <Button action={'done'} type={'submit'}/>
-                    <Button action={'close'} onClick={unEditable} />
+                    <Button action={'close'} onClick={unEditable}/>
                 </>
                 :
                 <div className={styles.titleWrapper} onClick={() => setIsEditable(true)}>

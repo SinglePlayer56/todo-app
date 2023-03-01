@@ -32,7 +32,7 @@
     opacity: 1;
 }
 
-.input:checked + .checkbox{
+.input:checked + .checkbox {
     opacity: 1;
 }
 

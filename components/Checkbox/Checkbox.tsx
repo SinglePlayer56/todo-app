@@ -1,12 +1,12 @@
 import styles from './Checkbox.module.css';
 import {CheckboxProps} from "./Checkbox.props";
 import cn from 'classnames';
+
 export const Checkbox = ({setToggle, isLoading, completed, id, className, ...props}: CheckboxProps): JSX.Element => {
 
 
-
     return (
-        <div className={cn(styles.wrapper, className)} >
+        <div className={cn(styles.wrapper, className)}>
             <input
                 className={styles.input}
                 id={id}

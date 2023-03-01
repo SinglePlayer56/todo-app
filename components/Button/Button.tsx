@@ -6,7 +6,7 @@ export const Button = ({action, className, ...props}: ButtonProps): JSX.Element 
     const IconButton = ButtonAction[action];
     return (
         <button
-            className={cn(styles.button ,className)}
+            className={cn(styles.button, className)}
             aria-label={action}
             {...props}
         >

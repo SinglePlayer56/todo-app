@@ -10,6 +10,7 @@ function makeStore() {
         devTools: true
     })
 }
+
 export const store = makeStore();
 
 export type RootStore = ReturnType<typeof makeStore>;

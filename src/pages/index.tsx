@@ -14,11 +14,11 @@ export default function Home(): JSX.Element {
         <>
             <Head>
                 <title>Todo Application</title>
-                <meta name="description" content="My todo application" />
+                <meta name="description" content="My todo application"/>
             </Head>
             <div className={styles.wrapper}>
                 <h1 className={styles.h1}>Todos application</h1>
-                <div className={styles.todos} >
+                <div className={styles.todos}>
                     <TodoForm/>
                     <motion.div className={styles.todosWrapper}>
                         {todos.map(todo => (
@@ -42,8 +42,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
 
     await store.dispatch(getTodos());
     return {
-        props: {
-        }
+        props: {}
     }
 });
 

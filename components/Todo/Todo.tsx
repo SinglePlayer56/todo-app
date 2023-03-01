@@ -5,14 +5,14 @@ import {motion} from 'framer-motion';
 import React, {useState} from "react";
 import {Button, Checkbox} from "components";
 
-export const Todo = React.memo (({id, text, completed}: ITodo): JSX.Element => {
+export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
     const dispatch = useAppDispatch();
     const [deleteTodos, setDeleteTodos] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const variants = {
         create: {opacity: 1},
-        delete: {opacity: 0, height:0, padding:0, marginBottom:0, width:0},
+        delete: {opacity: 0, height: 0, padding: 0, marginBottom: 0, width: 0},
         line: {width: '100%'},
         noLine: {width: 0}
     }

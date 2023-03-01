@@ -1,7 +1,7 @@
 import {AnyAction, createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {HYDRATE} from "next-redux-wrapper";
 import {RootState} from "../index";
-import TodoApi from "../../api/api.todo";
+import TodoApi from "../../API/api.todo";
 
 export interface ITodo {
     id: string,
@@ -20,7 +20,7 @@ export const getTodos = createAsyncThunk<ITodo[], undefined, { rejectValue: stri
     async function (_, {rejectWithValue}) {
         try {
             return TodoApi.getTodos();
-        } catch (e:unknown) {
+        } catch (e: unknown) {
             if (e instanceof Error) {
                 return rejectWithValue(e.message);
             }
@@ -34,7 +34,7 @@ export const addNewTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
     async function (text: string, {rejectWithValue}) {
         try {
             return TodoApi.createTodo(text);
-        } catch (e:unknown) {
+        } catch (e: unknown) {
             if (e instanceof Error) {
                 return rejectWithValue(e.message);
             }
@@ -43,7 +43,7 @@ export const addNewTodo = createAsyncThunk<ITodo, string, { rejectValue: string 
     }
 )
 
-export const toggleStatus = createAsyncThunk<ITodo, string, {rejectValue: string, state: {todos: ITodoReducer}}>(
+export const toggleStatus = createAsyncThunk<ITodo, string, { rejectValue: string, state: { todos: ITodoReducer } }>(
     'todo/toggleStaus',
     async function (id, {rejectWithValue, getState}) {
         const todo = getState().todos.todos.find((todo) => todo.id === id);
@@ -63,9 +63,9 @@ export const toggleStatus = createAsyncThunk<ITodo, string, {rejectValue: string
     }
 )
 
-export const deleteTodo = createAsyncThunk<string, string, {rejectValue: string}>(
+export const deleteTodo = createAsyncThunk<string, string, { rejectValue: string }>(
     'todos/deleteTodo',
-    async function (id, {rejectWithValue}){
+    async function (id, {rejectWithValue}) {
         try {
             const data = await TodoApi.deleteTodo(id);
 
@@ -103,7 +103,7 @@ const TodoSlice = createSlice({
                 state.todos = action.payload;
                 state.loading = false;
             })
-            .addCase(addNewTodo.pending,(state) => {
+            .addCase(addNewTodo.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
@@ -133,7 +133,7 @@ const TodoSlice = createSlice({
             .addMatcher(isHydrateAction, (state, action) => {
                 state.todos = action.payload.todos.todos;
             })
-            .addMatcher(isError, (state, action:PayloadAction<string>) => {
+            .addMatcher(isError, (state, action: PayloadAction<string>) => {
                 state.error = action.payload;
                 state.loading = false;
             })
