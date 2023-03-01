@@ -2,19 +2,44 @@ import {deleteTodo, ITodo, toggleStatus} from "../../store/reducers/todo.reducer
 import {useAppDispatch} from "../../custom-hooks/redux.hooks";
 import styles from './Todo.module.css';
 import {motion} from 'framer-motion';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Checkbox} from "components";
+import {useSwipeable} from "react-swipeable";
 
 export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
     const dispatch = useAppDispatch();
     const [deleteTodos, setDeleteTodos] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [x, setX] = useState<number | string>(0);
+
+    const handlersSwiper = useSwipeable({
+        onSwiped: eventData => {
+            if (eventData.deltaX > 90) {
+                setX('100');
+            } else {
+                setX(0);
+            }
+        },
+        onSwiping: eventData => {
+            if (eventData.deltaX < -90) {
+                setX(0);
+            } else {
+                setX(eventData.deltaX);
+            }
+        },
+        onSwipedRight: eventData => {
+            if (eventData.deltaX > 90) {
+                onDeleteTodo(id);
+            }
+        }
+    })
 
     const variants = {
         create: {opacity: 1},
-        delete: {opacity: 0, height: 0, padding: 0, marginBottom: 0, width: 0},
+        delete: {opacity: 0, height: 0, padding: 0, marginBottom: 0, width: '100%', translateX: '100%'},
         line: {width: '100%'},
-        noLine: {width: 0}
+        noLine: {width: 0},
+        swipeRight: {translateX: x}
     }
 
     const onDeleteTodo = async (id: string) => {
@@ -30,14 +55,18 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
         setIsLoading(false);
     }
 
+    const typeX = typeof x === 'number' ? 'px': '%';
+
     return (
         <motion.div
             animate={deleteTodos ? "delete" : "create"}
             variants={variants}
             initial={{opacity: 0}}
             transition={{duration: 0.5}}
-            style={{overflow: 'hidden'}}
-            className={styles.todo}>
+            style={{overflow: 'hidden', transition: 'all 0.2s linear' , transform: `translateX(${x}${typeX})`}}
+            className={styles.todo}
+            {...handlersSwiper}
+        >
             <Checkbox setToggle={onToggleTodo} isLoading={isLoading} completed={completed} id={id}/>
             <p className={styles.textWrapper}>
                 <motion.span
