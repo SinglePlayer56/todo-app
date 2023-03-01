@@ -2,7 +2,7 @@ import {deleteTodo, ITodo, toggleStatus} from "../../store/reducers/todo.reducer
 import {useAppDispatch} from "../../custom-hooks/redux.hooks";
 import styles from './Todo.module.css';
 import {motion} from 'framer-motion';
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Button, Checkbox} from "components";
 import {useSwipeable} from "react-swipeable";
 
@@ -14,21 +14,21 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
 
     const handlersSwiper = useSwipeable({
         onSwiped: eventData => {
-            if (eventData.deltaX > 90) {
+            if (eventData.absX > 150) {
                 setX('100');
             } else {
                 setX(0);
             }
         },
         onSwiping: eventData => {
-            if (eventData.deltaX < -90) {
+            if (eventData.absX < -90) {
                 setX(0);
             } else {
                 setX(eventData.deltaX);
             }
         },
         onSwipedRight: eventData => {
-            if (eventData.deltaX > 90) {
+            if (eventData.absX > 150) {
                 onDeleteTodo(id);
             }
         }
@@ -61,9 +61,9 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
         <motion.div
             animate={deleteTodos ? "delete" : "create"}
             variants={variants}
-            initial={{opacity: 0}}
+            initial={{opacity: 0, overflow: "hidden"}}
             transition={{duration: 0.5}}
-            style={{overflow: 'hidden', transition: 'all 0.2s linear' , transform: `translateX(${x}${typeX})`}}
+            style={{overflow: 'hidden', transform: `translateX(${x}${typeX})`}}
             className={styles.todo}
             {...handlersSwiper}
         >
