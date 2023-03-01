@@ -2,7 +2,7 @@ import {deleteTodo, ITodo, toggleStatus} from "../../store/reducers/todo.reducer
 import {useAppDispatch} from "../../custom-hooks/redux.hooks";
 import styles from './Todo.module.css';
 import {motion} from 'framer-motion';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Checkbox} from "components";
 import {useSwipeable} from "react-swipeable";
 
@@ -11,11 +11,13 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
     const [deleteTodos, setDeleteTodos] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [x, setX] = useState<number | string>(0);
+    const [isTranslate, setIsTranslate] = useState<boolean>(false);
 
     const handlersSwiper = useSwipeable({
         onSwiped: eventData => {
             if (eventData.deltaX > 150) {
-                setX('100');
+                setX('100%');
+                setIsTranslate(true);
             } else {
                 setX(0);
             }
@@ -30,21 +32,30 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
         onSwipedRight: eventData => {
             if (eventData.deltaX > 150) {
                 onDeleteTodo(id);
+
+                console.log(isTranslate);
             }
         }
     })
+
+    useEffect(() => {
+        if (x > 150) {
+            console.log(x)
+        }
+    },[x])
 
     const variants = {
         create: {opacity: 1, transition: {duration: 0.5}},
         delete: {opacity: 0, height: 0, padding: 0, marginBottom: 0, width: '100%', translateX: '100%',transition: {duration: 0.5}},
         line: {width: '100%'},
         noLine: {width: 0},
-        swipeRight: {translateX: x, transition: {duration: 0.05}, transitionTimingFunction: 'linear'}
+        swipeRight: {translateX: x, transition: {duration: 0.2}, transitionTimingFunction: 'linear'},
     }
 
     const onDeleteTodo = async (id: string) => {
         setIsLoading(true);
         setDeleteTodos(true);
+        setX(600);
         await dispatch(deleteTodo(id));
         setIsLoading(false);
     }
