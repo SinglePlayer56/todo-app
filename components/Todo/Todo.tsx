@@ -11,13 +11,11 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
     const [deleteTodos, setDeleteTodos] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [x, setX] = useState<number | string>(0);
-    const [isTranslate, setIsTranslate] = useState<boolean>(false);
 
     const handlersSwiper = useSwipeable({
         onSwiped: eventData => {
-            if (eventData.deltaX > 150) {
-                setX('100%');
-                setIsTranslate(true);
+            if (eventData.deltaX > 100) {
+                setX(500);
             } else {
                 setX(0);
             }
@@ -25,23 +23,23 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
         onSwiping: eventData => {
             if (eventData.deltaX < -120) {
                 setX(0);
+            } else if (eventData.deltaX > 100) {
+                setX(101)
             } else {
                 setX(eventData.deltaX);
             }
         },
         onSwipedRight: eventData => {
-            if (eventData.deltaX > 150) {
+            if (eventData.deltaX > 100) {
                 onDeleteTodo(id);
-
-                console.log(isTranslate);
             }
         }
     })
 
     useEffect(() => {
-        if (x > 150) {
+
             console.log(x)
-        }
+
     },[x])
 
     const variants = {
@@ -55,7 +53,6 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
     const onDeleteTodo = async (id: string) => {
         setIsLoading(true);
         setDeleteTodos(true);
-        setX(600);
         await dispatch(deleteTodo(id));
         setIsLoading(false);
     }
