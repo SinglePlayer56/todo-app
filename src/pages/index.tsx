@@ -6,9 +6,10 @@ import {GetServerSideProps} from "next";
 import {wrapper} from "../../store";
 import {motion} from 'framer-motion';
 import Head from "next/head";
+import {getTodosSelector} from "../../store/selectors/todo.selector";
 
 export default function Home(): JSX.Element {
-    const todos = useAppSelector((state) => state.todos.todos);
+    const todos = useAppSelector(getTodosSelector);
 
     return (
         <>

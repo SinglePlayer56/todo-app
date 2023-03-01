@@ -35,11 +35,11 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
     })
 
     const variants = {
-        create: {opacity: 1},
-        delete: {opacity: 0, height: 0, padding: 0, marginBottom: 0, width: '100%', translateX: '100%'},
+        create: {opacity: 1, transition: {duration: 0.5}},
+        delete: {opacity: 0, height: 0, padding: 0, marginBottom: 0, width: '100%', translateX: '100%',transition: {duration: 0.5}},
         line: {width: '100%'},
         noLine: {width: 0},
-        swipeRight: {translateX: x}
+        swipeRight: {translateX: x, transition: {duration: 0.05}, transitionTimingFunction: 'linear'}
     }
 
     const onDeleteTodo = async (id: string) => {
@@ -55,15 +55,11 @@ export const Todo = React.memo(({id, text, completed}: ITodo): JSX.Element => {
         setIsLoading(false);
     }
 
-    const typeX = typeof x === 'number' ? 'px': '%';
-
     return (
         <motion.div
-            animate={deleteTodos ? "delete" : "create"}
+            animate={[deleteTodos ? "delete" : "create", "swipeRight"]}
             variants={variants}
             initial={{opacity: 0, overflow: "hidden"}}
-            transition={{duration: 0.5}}
-            style={{overflow: 'hidden', transform: `translateX(${x}${typeX})`}}
             className={styles.todo}
             {...handlersSwiper}
         >
